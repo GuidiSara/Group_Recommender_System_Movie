@@ -3,8 +3,7 @@ import numpy as np
 from  candidate_group import candidate_group_person
 from sklearn.metrics.pairwise import cosine_similarity
 from find_n_neighbours import find_n_neighbours
-from user_item_score1 import User_item_score1
-from user_item_score import User_item_score
+import random
 
 ## Read csv
 ratings = pd.read_csv(r'C:\Users\guidi\Desktop\universita\Raccomandation System Project\progettoSII_vs\dataset\data.csv', sep=';', names=['user_id', 'movie_id', 'rating', 'timestamp'])
@@ -22,10 +21,8 @@ mean = ratings.groupby(by="user_id",as_index=False)['rating'].mean()
 rating_avg = pd.merge(ratings,mean,on='user_id')
 rating_avg['adg_rating']=rating_avg['rating_x']-rating_avg['rating_y']
 
-
 ## generates two people to recommend the movie
 people= candidate_group_person(ratings)
-print(people)
 
 ## use cosine similarity for found a Neighbors
 check = pd.pivot_table(rating_avg,values='rating_x',index='user_id',columns='movie_id')
@@ -54,39 +51,37 @@ similarity_with_movie.columns=final_user.index
 
 # top 30 neighbours for each user
 sim_user_30_u = find_n_neighbours(similarity_with_user,30)
+# print(sim_user_30_u)
 
+def candidate_group_person():
+    people = []
+    found = True
 
+    while found:
+        person_one = random.randint(1, 943)
+        person_two = random.randint(1, 943)
+        if(person_one != person_two and (ratings['user_id'] == person_one).any() and (ratings['user_id'] == person_two).any()):
+            found = False
+            people.append(person_one)
+            people.append(person_two)
 
-# top 30 neighbours for each user
-sim_user_30_m = find_n_neighbours(similarity_with_movie,30)
+    return people
 
+def find_common_elements(series1, series2):
+    common_elements = series1[series1.isin(series2)]
+    return common_elements
 
-
-def get_user_similar_movies( user1, user2 ):
-    common_movies = rating_avg[rating_avg.user_id == user1].merge(
-    rating_avg[rating_avg.user_id == user2],
-    on = "movie_id",
-    how = "inner" )
-    return common_movies.merge( movies, on = 'movie_id' )
-
-a = get_user_similar_movies(370,86309)
-a = a.loc[ : , ['rating_x_x','rating_x_y','title']]
-# pd.DataFrame(a)
-# print(a)
-
-
-
-score = User_item_score(320,7371, sim_user_30_m, mean, final_movie, similarity_with_movie)
-print("score (u,i) is",score)
-
-rating_avg = rating_avg.astype({"movie_id": str})
-movie_user = rating_avg.groupby(by = 'user_id')['movie_id'].apply(lambda x:','.join(x))
-
-
-
-predicted_movies = User_item_score1(people[1], sim_user_30_m, movie_user, final_movie, mean, similarity_with_movie, movies, check)
-print(" ")
-print("The Recommendations for User Id : 370")
-print("   ")
-for i in predicted_movies:
-    print(i)
+people = [1,2]
+sim_user_30_u1 = sim_user_30_u.iloc[1]
+sim_user_30_u2 = sim_user_30_u.iloc[2]
+find_neighbors = find_common_elements(sim_user_30_u1, sim_user_30_u2)
+while find_neighbors.empty :
+    print("sono qui")
+    people_new = candidate_group_person()
+    people[0] = people_new[0]
+    people[1] = people_new[1]
+    print(people_new)
+    sim_user_30_u1 = sim_user_30_u.iloc[people[0]]
+    sim_user_30_u2 = sim_user_30_u.iloc[people[1]]
+    find_neighbors = find_common_elements(sim_user_30_u1, sim_user_30_u2)
+    
