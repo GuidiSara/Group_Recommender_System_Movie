@@ -9,7 +9,7 @@ I have used MovieLens 100k data set for our project: https://grouplens.org/datas
 
 
 ## Install Projct
-" git clone https://github.com/GuidiSara/Group_Raccomander_System_Movie.git ." and then i have used jupyter for run the project.
+" git clone https://github.com/GuidiSara/Group_Recommender_System_Movie/edit/main/README.md ." and then i have used jupyter for run the project.
 
 
 
