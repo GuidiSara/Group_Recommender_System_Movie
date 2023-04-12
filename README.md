@@ -1,4 +1,4 @@
-# Group movie Raccomander System
+# Group movie Recommender System
 
 In this project, a movie recommendation system was created for two users.
 L'obiettivo è quello di  consigliare un film da vedere a due utenti sulla base delle valutazioni che hanno dato su altri film.
