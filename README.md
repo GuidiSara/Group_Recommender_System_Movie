@@ -4,7 +4,7 @@ In this project, a movie recommendation system was created for two users.
 L'obiettivo è quello di  consigliare un film da vedere a due utenti sulla base delle valutazioni che hanno dato su altri film.
 
 ## Dataset
-I have used MovieLens 100k data set for our project: https://grouplens.org/datasets/movielens/100k/
+I have used MovieLens 100k data set for our project: https://grouplens.org/datasets/movielens/latest/
 
 
 
